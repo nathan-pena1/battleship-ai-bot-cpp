@@ -1,0 +1,16 @@
+# Compiled binaries
+*.exe
+*.o
+*.obj
+*.out
+
+# IDE settings
+.vscode/
+.vs/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Planning file 
+battleship_planning.txt
