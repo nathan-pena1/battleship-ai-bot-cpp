@@ -2,57 +2,51 @@
 #include <iostream>
 #include <vector>
 
-void placeShip(vector<Ship>& fleet, Cell& grid[gridSize][gridSize]){
+bool Cell::containsShip(){
+    return hasShip;
+}
 
-        int unplacedCount = fleet.size();
-        while(unplacedCount != 0){
-            int selectedShip;
-            bool found = false;
-            for(int i = 0; i < fleet.size(); i++){
-                Ship current = fleet[i];
-                if(!(current.beenPlaced)){
-                std::cout << "Select " << i << " to place " << current.name << std::endl;
-                }
-            }    
-            std::cin >> selectedShip;
-            int index = -1;
-            for(int i = 0; i < fleet.size(); i++){
-                if(selectedShip == i && !fleet[i].beenPlaced){
-                    found = true;
-                    index = i;
-                    Ship current =  fleet[i]; 
-                    for(int j = 0; j < current.health; j++){
-                        bool cellPlaced = false;
-                        while(!cellPlaced){
-                            int row, col;
-                            int curr = j + 1;
-                            std::cout << "Select row " << curr << " for " << current.name << "(0-9): ";
-                            std::cin >> row;
-                            std::cout << "Select column " << curr << " for " << current.name << "(0-9): ";
-                            std::cin >> col;
+bool Cell::beenAttacked(){
+    return hasAttack;
+}
 
-                            if(row < 0 || row >= gridSize || col < 0 || col >= gridSize){
-                                std::cout << "Out of bounds! Please make a selection 0-9" << std::endl;
-                            }
-                            else if(grid[row][col].hasShip == false){   
-                                grid[row][col].hasShip = true;
-                                cellPlaced = true;
-                            }
-                            else{
-                                std::cout << "Coordinate occupied. Try again." << std::endl;
-                            }
-                        }
-                    }
-                break;
-                }
-            }
-                if(!found){
-                    std::cout << "Please make a valid selection." << std::endl;
-                }
-                else{
-                    fleet[index].beenPlaced = true;
-                    unplacedCount--;
-                }
-            
+void Cell::placeShip(){
+    hasShip = true;
+}
+void Cell::attackCell(){
+    hasAttack = true;
+}
+
+bool validPlacement(Ship current, Cell grid[gridSize][gridSize], int row, int col, std::string direction){  
+    for (int i = 0; i < current.getHealth(); i++){
+        int r = row;
+        int c = col;
+        if (direction == "h" || direction == "H"){
+            c = col + i;
         }
+        else if (direction == "v" || direction == "V"){
+            r = row + i;
+        }
+        else{
+            return false;
+        }
+        if (r < 0 || r >= gridSize || c < 0 || c >= gridSize){
+            return false; 
+        }
+        if(grid[r][c].containsShip()){
+            return false;
+        }
+    }
+    return true;
+}
+
+void setShip(Ship current, Cell (&grid)[gridSize][gridSize], int row, int col, std::string direction){
+    for (int i = 0; i < current.getHealth(); i++){
+        if (direction == "h" || direction == "H"){
+            grid[row][col + i].placeShip();
+        }
+        else if (direction == "v" || direction == "V"){
+            grid[row + i][col].placeShip();
+        }
+    }
 }

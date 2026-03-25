@@ -10,7 +10,7 @@ class User {
     int losses = 0;
     std::string name;
     User(std::string name);
-    static User createUser();
+    static User createUser(std::string name);
 //  private:
 //  std::string password;
 
