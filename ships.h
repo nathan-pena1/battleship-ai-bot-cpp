@@ -4,11 +4,18 @@
 
 class Ship{
 
-    public:
     std::string name;
     int health;
-    bool beenPlaced = false;
-    Ship(std::string name, int health);
+
+// below may become obsolete 
+    bool placed = false;
+
+    public:
+        Ship(std::string name, int health);
+        std::string getName();
+        int getHealth();
+        bool beenPlaced();
+        void place();
 
 };
 

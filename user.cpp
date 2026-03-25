@@ -2,9 +2,6 @@
 
 User::User(std::string name) : name(name){}
 
-User::createUser(){
-    std::string name;
-    std::cout << "Please enter a username: ";
-    std::cin >> name;
+User User::createUser(std::string name){
     return User(name);
 }
