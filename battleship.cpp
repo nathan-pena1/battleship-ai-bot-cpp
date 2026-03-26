@@ -11,7 +11,7 @@ int main(){
     cout << "Please enter a username: ";
     cin >> name;
     cout << endl;
-    User player = User::createUser(name);
+    Player user = Player::createPlayer(name);
     Cell grid[gridSize][gridSize];
     vector<Ship> fleet{
         {"Carrier", 5},
@@ -25,7 +25,7 @@ int main(){
     while(unplacedCount != 0){
             int selectedShip;
             bool found = false;
-            displayMap(grid);
+            displaySelection(grid);
             for(int i = 0; i < fleet.size(); i++){
                 Ship current = fleet[i];
                 if(!(current.beenPlaced())){
@@ -33,6 +33,10 @@ int main(){
                 }
             }    
             cin >> selectedShip;
+//          DELETE ME: Temp Special Top Secret Dev Debugging Tool
+            if(selectedShip == -1){
+                break;
+            }
             cout << endl;
             int index;
         
@@ -68,6 +72,13 @@ int main(){
                 std::cout << "Please make a valid selection.\n";
             }
         }
+        cout << "Ships placed successfully!\n\nBeginning game!\n";
+        for(int i = 3; i > 0; i--){
+            cout << i <<"...\n";
+        }
+        cout << endl;
+        Cell gameGrid[gridSize][gridSize];
+        displayMap(gameGrid); 
 
         
     return 0;
