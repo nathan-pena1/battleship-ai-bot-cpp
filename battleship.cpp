@@ -25,10 +25,11 @@ int main(){
     while(unplacedCount != 0){
             int selectedShip;
             bool found = false;
+            displayMap(grid);
             for(int i = 0; i < fleet.size(); i++){
                 Ship current = fleet[i];
                 if(!(current.beenPlaced())){
-                std::cout << "Select " << i << " to place " << current.getName() << std::endl;
+                std::cout << "Enter: " << i << " to place " << current.getName() << std::endl;
                 }
             }    
             cin >> selectedShip;
