@@ -3,6 +3,7 @@
 #include "map.h"
 #include "ships.h"
 #include "player.h"
+#include "game_manager.h"
 using namespace std;
 
 int main(){
@@ -63,7 +64,7 @@ int main(){
                     continue;
                 }   
                 fleet[i].place();
-                setShip(current, grid, row, col, direction);
+                placeShip(current, grid, row, col, direction);
                 unplacedCount--;
                 cout << endl;
                 break;
@@ -81,7 +82,17 @@ int main(){
         Bot enemyBot;
         enemyBot.createGrid();
         Cell (&gameGrid)[gridSize][gridSize] = enemyBot.getGrid();
-        displayMap(gameGrid); 
+        vector<Ship>& enemyFleet = enemyBot.getFleet();
+        GameManager game;
+        while(!(game.isOver())){
+        displayMap(gameGrid);
+        int row, col;
+        cout << "Select row to strike (0-9): ";
+        cin >> row;
+        cout << "Select col to strike (0-9): "; 
+        cin >> col;
+        user.attackCoordinate(fleet, gameGrid, row, col);
+        }
 
         
     return 0;
