@@ -17,6 +17,10 @@ class Player {
         static Player createPlayer(std::string name);
         virtual ~Player() {}
         std::string getName();
+        Cell (&getGrid())[gridSize][gridSize];
+        std::vector<Ship>& getFleet();
+        void attackCoordinate(std::vector<Ship>& fleet, Cell (&gameGrid)[gridSize][gridSize],int row, int col);
+
 //  private:
 //  std::string password;
 
@@ -31,7 +35,6 @@ class Bot : public Player{
     public:
         Bot();
         void createGrid();
-        Cell (&getGrid())[gridSize][gridSize];
 };
 
 #endif

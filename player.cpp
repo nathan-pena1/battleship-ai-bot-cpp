@@ -27,7 +27,7 @@ void Bot::createGrid(){
             std::string direction = (flip(gen) == 0) ? "h" : "v";
             if(validPlacement(fleet[i], grid, row, col, direction)){
                 fleet[i].place();
-                setShip(fleet[i], grid, row, col, direction);
+                placeShip(fleet[i], grid, row, col, direction);
                 placed = true;
             }
         }
@@ -35,6 +35,18 @@ void Bot::createGrid(){
 }
 
 // Returns a reference to a 2D array of Cells of size [gridSize]x[gridSize]
-Cell (&Bot::getGrid())[gridSize][gridSize] {
+Cell (&Player::getGrid())[gridSize][gridSize] {
     return grid;
+}
+
+std::vector<Ship>& Player::getFleet(){
+    return fleet;
+}
+
+void Player::attackCoordinate(std::vector<Ship>& fleet, Cell (&gameGrid)[gridSize][gridSize],int row, int col){
+    gameGrid[row][col].attackCell();
+    if(gameGrid[row][col].containsShip()){
+        Ship* hitShip = gameGrid[row][col].getShip();
+        hitShip->registerHit();
+    }
 }

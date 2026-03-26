@@ -9,17 +9,20 @@ class Cell{
 
     bool hasShip = false;
     bool hasAttack = false;
+    Ship* ship = nullptr;
 
     public:
         bool containsShip();
         bool beenAttacked();
         void placeShip();
         void attackCell();
+        Ship* getShip();
+        void setShip(Ship* ship);
 
 };
 
 bool validPlacement(Ship current, Cell grid[gridSize][gridSize], int row, int col, std::string direction);
-void setShip(Ship current, Cell (&grid)[gridSize][gridSize], int row, int col, std::string direction);
+void placeShip(Ship& current, Cell (&grid)[gridSize][gridSize], int row, int col, std::string direction);
 void displaySelection(Cell grid[gridSize][gridSize]);
 void displayMap(Cell (&grid)[gridSize][gridSize]);
 
