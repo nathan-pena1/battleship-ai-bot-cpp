@@ -50,3 +50,39 @@ void setShip(Ship current, Cell (&grid)[gridSize][gridSize], int row, int col, s
         }
     }
 }
+
+// Temporary terminal display for testing and debugging 
+void displayMap(Cell grid[gridSize][gridSize]){
+    std::cout << "   ";
+    for(int i = 0; i < gridSize; i++){
+        std::cout << i << " ";
+    }
+    std::cout << std::endl;
+    std::cout << "   ";
+    for(int i = 0; i < gridSize; i++){
+        std::cout << "_ ";
+    }
+    std::cout << std::endl;
+    for(int i = 0; i < gridSize; i++){
+        std::cout << i << " |";
+        for(int j = 0; j < gridSize; j++){
+            if(grid[i][j].containsShip()){
+                if(grid[i][j].beenAttacked()){
+                    std::cout << "x ";
+                }
+                else{
+                    std::cout << "* ";
+                }
+            }
+            else{
+                std::cout << "~ ";
+            }
+        }
+        std::cout << "|" << std::endl;
+    }
+    std::cout << "   ";
+    for(int i = 0; i < gridSize; i++){
+        std::cout << "- ";
+    }
+    std::cout << std::endl;
+}

@@ -20,6 +20,7 @@ class Cell{
 
 bool validPlacement(Ship current, Cell grid[gridSize][gridSize], int row, int col, std::string direction);
 void setShip(Ship current, Cell (&grid)[gridSize][gridSize], int row, int col, std::string direction);
+void displayMap(Cell grid[gridSize][gridSize]);
 
 // void placeShip(std::vector<Ship>& fleet, Cell (&grid)[gridSize][gridSize]);
 
