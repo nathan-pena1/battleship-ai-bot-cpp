@@ -87,7 +87,7 @@ void displaySelection(Cell grid[gridSize][gridSize]){
     std::cout << std::endl;
 }
 
-void displayMap(Cell grid[gridSize][gridSize]){
+void displayMap(Cell (&grid)[gridSize][gridSize]){
     std::cout << "   ";
     for(int i = 0; i < gridSize; i++){
         std::cout << i << " ";

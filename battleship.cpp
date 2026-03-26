@@ -2,7 +2,7 @@
 #include <vector>
 #include "map.h"
 #include "ships.h"
-#include "user.h"
+#include "player.h"
 using namespace std;
 
 int main(){
@@ -77,7 +77,10 @@ int main(){
             cout << i <<"...\n";
         }
         cout << endl;
-        Cell gameGrid[gridSize][gridSize];
+
+        Bot enemyBot;
+        enemyBot.createGrid();
+        Cell (&gameGrid)[gridSize][gridSize] = enemyBot.getGrid();
         displayMap(gameGrid); 
 
         
