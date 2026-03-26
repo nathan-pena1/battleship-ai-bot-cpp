@@ -20,3 +20,7 @@ bool Ship::beenPlaced(){
 void Ship::place(){
     placed = true;
 }
+
+void Ship::registerHit(){
+    health -= 1;
+}

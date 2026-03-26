@@ -16,6 +16,7 @@ class Ship{
         int getHealth();
         bool beenPlaced();
         void place();
+        void registerHit();
 
 };
 
