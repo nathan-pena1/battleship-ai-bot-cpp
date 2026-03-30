@@ -91,9 +91,10 @@ int main(){
         cin >> row;
         cout << "Select col to strike (0-9): "; 
         cin >> col;
-        user.attackCoordinate(fleet, gameGrid, row, col);
+        user.attackCoordinate(enemyFleet, gameGrid, row, col);
+        
+        enemyBot.attackCoordinate(fleet, grid, enemyBot.genCoordinate(), enemyBot.genCoordinate());
         }
-
         
     return 0;
 }

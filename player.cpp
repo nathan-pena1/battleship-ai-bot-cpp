@@ -34,6 +34,13 @@ void Bot::createGrid(){
     }
 }
 
+int Bot::genCoordinate(){
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<int> range(0,9);
+    return range(gen);
+}
+
 // Returns a reference to a 2D array of Cells of size [gridSize]x[gridSize]
 Cell (&Player::getGrid())[gridSize][gridSize] {
     return grid;

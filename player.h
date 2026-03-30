@@ -35,6 +35,7 @@ class Bot : public Player{
     public:
         Bot();
         void createGrid();
+        int genCoordinate();
 };
 
 #endif
