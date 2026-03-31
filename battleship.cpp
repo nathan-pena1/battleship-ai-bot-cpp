@@ -81,14 +81,10 @@ int main(){
         Cell (&gameGrid)[gridSize][gridSize] = enemyBot.getGrid();
         vector<Ship>& enemyFleet = enemyBot.getFleet();
         GameManager game;
-        int botRow; 
-        int botCol;
-        bool searchFlag = false;
-        Ship* hitShip;
+        int row; 
+        int col;
         while(!(game.isOver())){
         displayMap(gameGrid);
-        int row = -1; 
-        int col = -1;
         do{
             cout << "Select row to strike (0-9): ";
             cin >> row;
@@ -96,22 +92,7 @@ int main(){
             cin >> col;
         }    while(!user.validAttack(gameGrid, row, col));
         user.attackCoordinate(gameGrid, row, col);
-        if(!searchFlag){
-            do{
-            botRow = enemyBot.genCoordinate();
-            botCol = enemyBot.genCoordinate();
-            }   while(!user.validAttack(grid, botRow, botCol));
-            if(enemyBot.attackCoordinate(grid, botRow, botCol) && !(grid[botRow][botCol].getShip()->isSunk())){
-                searchFlag = true;
-                hitShip = grid[botRow][botCol].getShip();
-            }
-        }
-        else{
-            
-            if(hitShip->isSunk()){
-                searchFlag = false;
-            }
-
+        enemyBot.takeTurn(grid);
         }
         
         

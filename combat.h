@@ -9,7 +9,6 @@ class Combat{
     public:
     bool attackCoordinate(Cell (&gameGrid)[gridSize][gridSize],int row, int col);
     bool validAttack(Cell (&gameGrid)[gridSize][gridSize], int row, int col);
-    void destroySearch(Cell (&gameGrid)[gridSize][gridSize], int row, int col);
 };
 
 

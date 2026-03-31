@@ -3,6 +3,8 @@
 #include <string>
 #include <vector>
 #include <random>
+#include <queue>
+#include <utility>
 #include "map.h" 
 #include "ships.h"
 #include "combat.h"
@@ -34,10 +36,16 @@ class User : public Player{
 
 class Bot : public Player{
 
+    enum class Mode { search, destroy };
+    Mode mode = Mode::search;
+    std::queue<std::pair<int,int>> targetQueue;
+
     public:
         Bot();
         void createGrid();
         int genCoordinate();
+        void fillTargets(Cell (&gameGrid)[gridSize][gridSize], int row, int col);
+        void takeTurn(Cell (&gameGrid)[gridSize][gridSize]);
 };
 
 #endif

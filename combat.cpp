@@ -23,7 +23,3 @@ bool Combat::validAttack(Cell (&gameGrid)[gridSize][gridSize], int row, int col)
     return true;
 }
 
-void destroySearch(Cell (&gameGrid)[gridSize][gridSize], int row, int col){
-    
-
-}
