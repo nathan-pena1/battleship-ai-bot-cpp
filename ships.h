@@ -17,6 +17,7 @@ class Ship{
         bool beenPlaced();
         void place();
         void registerHit();
+        bool isSunk();
 
 };
 

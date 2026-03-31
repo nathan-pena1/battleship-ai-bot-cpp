@@ -5,8 +5,9 @@
 #include <random>
 #include "map.h" 
 #include "ships.h"
+#include "combat.h"
 
-class Player {
+class Player : public Combat{
 
     protected:
         std::string name;
@@ -19,7 +20,8 @@ class Player {
         std::string getName();
         Cell (&getGrid())[gridSize][gridSize];
         std::vector<Ship>& getFleet();
-        void attackCoordinate(std::vector<Ship>& fleet, Cell (&gameGrid)[gridSize][gridSize],int row, int col);
+        void setFleet(const std::vector<Ship>& ships);
+        static std::vector<Ship> defaultFleet();
 
 //  private:
 //  std::string password;

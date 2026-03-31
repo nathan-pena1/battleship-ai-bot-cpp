@@ -4,6 +4,7 @@
 #include "ships.h"
 #include "player.h"
 #include "game_manager.h"
+#include "combat.h"
 using namespace std;
 
 int main(){
@@ -13,14 +14,9 @@ int main(){
     cin >> name;
     cout << endl;
     Player user = Player::createPlayer(name);
-    Cell grid[gridSize][gridSize];
-    vector<Ship> fleet{
-        {"Carrier", 5},
-        {"Battleship", 4},
-        {"Cruiser", 3},
-        {"Submarine", 3},
-        {"Destroyer", 2}
-    };
+    user.setFleet(Player::defaultFleet());
+    Cell (&grid)[gridSize][gridSize] = user.getGrid();
+    vector<Ship>& fleet = user.getFleet();
 
     int unplacedCount = fleet.size();
     while(unplacedCount != 0){
@@ -48,7 +44,7 @@ int main(){
         
                 found = true;
                 index = i;
-                Ship current =  fleet[i]; 
+                Ship& current =  fleet[i]; 
                 int row, col;
                 string direction;
                 std::cout << "Select starting row for " << current.getName() << " (0-9): ";
@@ -80,21 +76,44 @@ int main(){
         cout << endl;
 
         Bot enemyBot;
+        enemyBot.setFleet(Bot::defaultFleet());
         enemyBot.createGrid();
         Cell (&gameGrid)[gridSize][gridSize] = enemyBot.getGrid();
         vector<Ship>& enemyFleet = enemyBot.getFleet();
         GameManager game;
+        int botRow; 
+        int botCol;
+        bool searchFlag = false;
+        Ship* hitShip;
         while(!(game.isOver())){
         displayMap(gameGrid);
-        int row, col;
-        cout << "Select row to strike (0-9): ";
-        cin >> row;
-        cout << "Select col to strike (0-9): "; 
-        cin >> col;
-        user.attackCoordinate(enemyFleet, gameGrid, row, col);
-        
-        enemyBot.attackCoordinate(fleet, grid, enemyBot.genCoordinate(), enemyBot.genCoordinate());
+        int row = -1; 
+        int col = -1;
+        do{
+            cout << "Select row to strike (0-9): ";
+            cin >> row;
+            cout << "Select col to strike (0-9): "; 
+            cin >> col;
+        }    while(!user.validAttack(gameGrid, row, col));
+        user.attackCoordinate(gameGrid, row, col);
+        if(!searchFlag){
+            do{
+            botRow = enemyBot.genCoordinate();
+            botCol = enemyBot.genCoordinate();
+            }   while(!user.validAttack(grid, botRow, botCol));
+            if(enemyBot.attackCoordinate(grid, botRow, botCol) && !(grid[botRow][botCol].getShip()->isSunk())){
+                searchFlag = true;
+                hitShip = grid[botRow][botCol].getShip();
+            }
         }
+        else{
+            
+            if(hitShip->isSunk()){
+                searchFlag = false;
+            }
+
+        }
+        
         
     return 0;
 }

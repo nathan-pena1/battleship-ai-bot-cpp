@@ -50,10 +50,16 @@ std::vector<Ship>& Player::getFleet(){
     return fleet;
 }
 
-void Player::attackCoordinate(std::vector<Ship>& fleet, Cell (&gameGrid)[gridSize][gridSize],int row, int col){
-    gameGrid[row][col].attackCell();
-    if(gameGrid[row][col].containsShip()){
-        Ship* hitShip = gameGrid[row][col].getShip();
-        hitShip->registerHit();
-    }
+void Player::setFleet(const std::vector<Ship>& ships){
+    fleet = ships;
+}
+
+std::vector<Ship> Player::defaultFleet(){
+    return {
+        {"Carrier", 5},
+        {"Battleship", 4},
+        {"Cruiser", 3},
+        {"Submarine", 3},
+        {"Destroyer", 2}
+    };
 }
