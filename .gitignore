@@ -3,12 +3,13 @@
 *.o
 *.obj
 *.out
+battleship
 
 # IDE settings
 .vscode/
 .vs/
 
-# OS-specific files
+# OS files
 .DS_Store
 Thumbs.db
 
