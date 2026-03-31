@@ -13,7 +13,6 @@ std::string Player::getName(){
 Bot::Bot() : Player("E-Tron"){}
 
 void Bot::createGrid(){
-
     std::random_device rd;
     std::mt19937 gen(rd());
     std::uniform_int_distribution<int> range(0, 9);
@@ -34,6 +33,13 @@ void Bot::createGrid(){
     }
 }
 
+int Bot::genCoordinate(){
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<int> range(0,9);
+    return range(gen);
+}
+
 // Returns a reference to a 2D array of Cells of size [gridSize]x[gridSize]
 Cell (&Player::getGrid())[gridSize][gridSize] {
     return grid;
@@ -43,10 +49,58 @@ std::vector<Ship>& Player::getFleet(){
     return fleet;
 }
 
-void Player::attackCoordinate(std::vector<Ship>& fleet, Cell (&gameGrid)[gridSize][gridSize],int row, int col){
-    gameGrid[row][col].attackCell();
-    if(gameGrid[row][col].containsShip()){
-        Ship* hitShip = gameGrid[row][col].getShip();
-        hitShip->registerHit();
+void Player::setFleet(const std::vector<Ship>& ships){
+    fleet = ships;
+}
+
+std::vector<Ship> Player::defaultFleet(){
+    return {
+        {"Carrier", 5},
+        {"Battleship", 4},
+        {"Cruiser", 3},
+        {"Submarine", 3},
+        {"Destroyer", 2}
+    };
+}
+
+void Bot::fillTargets(Cell (&gameGrid)[gridSize][gridSize], int row, int col){
+    int modifyRow[] = {0, 1, -1, 0};
+    int modifyCol[] = {-1, 0, 0, 1};
+    for(int i = 0; i < 4; i++){
+        int modRow = row + modifyRow[i];
+        int modCol = col + modifyCol[i];
+        if(validAttack(gameGrid, modRow, modCol)){
+            targetQueue.push({modRow, modCol});
+        }
     }
+}
+
+void Bot::takeTurn(Cell (&gameGrid)[gridSize][gridSize]){
+    int row;
+    int col;
+    if(mode == Mode::destroy){
+        while(!targetQueue.empty() && !validAttack(gameGrid, targetQueue.front().first, targetQueue.front().second)){
+            targetQueue.pop();
+        }
+        if(targetQueue.empty()){
+            mode = Mode::search;
+        }
+    }
+
+    if(mode == Mode::search){
+        do{
+            row = genCoordinate();
+            col = genCoordinate();
+        }   while(!validAttack(gameGrid, row, col));
+    }
+    else{
+        row = targetQueue.front().first;
+        col = targetQueue.front().second;
+        targetQueue.pop();
+    }
+    bool hit = attackCoordinate(gameGrid, row, col);
+        if(hit){
+            fillTargets(gameGrid, row, col);
+            mode = Mode::destroy;
+        }
 }

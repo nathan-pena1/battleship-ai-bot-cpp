@@ -24,3 +24,10 @@ void Ship::place(){
 void Ship::registerHit(){
     health -= 1;
 }
+
+bool Ship::isSunk(){
+    if(health == 0){
+        return true;
+    }
+    return false;
+}
