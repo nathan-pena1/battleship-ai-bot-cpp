@@ -1,10 +1,14 @@
 #include "combat.h"
+#include "player.h"
 
-bool Combat::attackCoordinate(Cell (&gameGrid)[gridSize][gridSize],int row, int col){
+bool Combat::attackCoordinate(Cell (&gameGrid)[gridSize][gridSize], Player& enemy, int row, int col){
     gameGrid[row][col].attackCell();
     if(gameGrid[row][col].containsShip()){
         Ship* hitShip = gameGrid[row][col].getShip();
         hitShip->registerHit();
+        if(hitShip->isSunk()){
+            enemy.removeShip();
+        }
         return true;
     }
     return false;

@@ -51,6 +51,7 @@ std::vector<Ship>& Player::getFleet(){
 
 void Player::setFleet(const std::vector<Ship>& ships){
     fleet = ships;
+    numShips = fleet.size();
 }
 
 std::vector<Ship> Player::defaultFleet(){
@@ -75,7 +76,7 @@ void Bot::fillTargets(Cell (&gameGrid)[gridSize][gridSize], int row, int col){
     }
 }
 
-void Bot::takeTurn(Cell (&gameGrid)[gridSize][gridSize]){
+bool Bot::takeTurn(Cell (&gameGrid)[gridSize][gridSize], Player& user){
     int row;
     int col;
     if(mode == Mode::destroy){
@@ -98,9 +99,18 @@ void Bot::takeTurn(Cell (&gameGrid)[gridSize][gridSize]){
         col = targetQueue.front().second;
         targetQueue.pop();
     }
-    bool hit = attackCoordinate(gameGrid, row, col);
+    bool hit = attackCoordinate(gameGrid, user, row, col);
         if(hit){
             fillTargets(gameGrid, row, col);
             mode = Mode::destroy;
+            return true;
         }
+    return false;
+}
+
+int Player::getNumShips() const{
+    return numShips;
+}
+void Player::removeShip(){
+    numShips--;
 }

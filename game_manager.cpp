@@ -14,3 +14,10 @@ int GameManager::flipCoin(){
     std::uniform_int_distribution<int> range(0,1);
     return range(gen);
 }
+
+bool GameManager::winner(const Player& user, const Player& bot){
+    if(user.getNumShips() == 0 || bot.getNumShips() == 0){
+        return true;
+    }
+    return false;
+}
