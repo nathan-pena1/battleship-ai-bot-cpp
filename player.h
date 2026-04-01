@@ -15,6 +15,7 @@ class Player : public Combat{
         std::string name;
         std::vector<Ship> fleet;
         Cell grid[gridSize][gridSize];
+        int numShips = -1;
     public:
         Player(std::string name);
         static Player createPlayer(std::string name);
@@ -24,6 +25,8 @@ class Player : public Combat{
         std::vector<Ship>& getFleet();
         void setFleet(const std::vector<Ship>& ships);
         static std::vector<Ship> defaultFleet();
+        int getNumShips() const;
+        void removeShip();
 
 //  private:
 //  std::string password;
@@ -45,7 +48,7 @@ class Bot : public Player{
         void createGrid();
         int genCoordinate();
         void fillTargets(Cell (&gameGrid)[gridSize][gridSize], int row, int col);
-        void takeTurn(Cell (&gameGrid)[gridSize][gridSize]);
+        bool takeTurn(Cell (&gameGrid)[gridSize][gridSize], Player& user);
 };
 
 #endif

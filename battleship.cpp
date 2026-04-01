@@ -47,12 +47,18 @@ int main(){
                 Ship& current =  fleet[i]; 
                 int row, col;
                 string direction;
-                std::cout << "Select starting row for " << current.getName() << " (0-9): ";
-                std::cin >> row;
-                std::cout << "Select starting column for " << current.getName() << " (0-9): ";
-                std::cin >> col;
-                std::cout << "Horizontal or vertical? (H/V): ";
-                std::cin >> direction;
+                displaySelection(grid);
+                cout << "Select starting row for " << current.getName() << " (0-9): ";
+                cin >> row;
+                cout << endl;
+                displaySelection(grid);
+                cout << "Select starting column for " << current.getName() << " (0-9): ";
+                cin >> col;
+                cout << endl;
+                displaySelection(grid);
+                cout << "Horizontal or vertical? (H/V): ";
+                cin >> direction;
+
 
                 if(!validPlacement(current, grid, row, col, direction)){
                     std::cout << "Please make a valid selection.\n";
@@ -84,15 +90,28 @@ int main(){
         int row; 
         int col;
         while(!(game.isOver())){
-        displayMap(gameGrid);
-        do{
-            cout << "Select row to strike (0-9): ";
-            cin >> row;
-            cout << "Select col to strike (0-9): "; 
-            cin >> col;
-        }    while(!user.validAttack(gameGrid, row, col));
-        user.attackCoordinate(gameGrid, row, col);
-        enemyBot.takeTurn(grid);
+            displayMap(gameGrid);
+            do{
+                cout << "Select row to strike (0-9): ";
+                cin >> row;
+                cout << "Select col to strike (0-9): "; 
+                cin >> col;
+            }    while(!user.validAttack(gameGrid, row, col));
+            if(user.attackCoordinate(gameGrid, enemyBot, row, col)){
+                cout << "Enemy ship hit!\n";
+            }
+            if(enemyBot.takeTurn(grid, user)){
+                cout << "Your ship has been hit!\n";
+            }
+            if(game.winner(user, enemyBot)){
+                if(user.getNumShips() > enemyBot.getNumShips()){
+                cout << user.getName() << " has won the game!\n";
+                }
+                else{
+                    cout << enemyBot.getName() << " has won the game!\n";
+                }
+                game.endGame();
+            }
         }
         
         
