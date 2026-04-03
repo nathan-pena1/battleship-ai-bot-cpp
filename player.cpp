@@ -29,7 +29,7 @@ void Bot::createGrid(){
         while(!placed){
             int row = range(gen);
             int col = range(gen);
-            std::string direction = (flip(gen) == 0) ? "h" : "v";
+            char direction = (flip(gen) == 0) ? 'h' : 'v';
             if(validPlacement(fleet[i], grid, row, col, direction)){
                 fleet[i].place();
                 placeShip(fleet[i], grid, row, col, direction);

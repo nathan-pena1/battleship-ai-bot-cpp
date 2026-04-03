@@ -10,7 +10,7 @@ int Ship::getHealth() const{
     return health;
 }
 
-bool Ship::beenPlaced(){
+bool Ship::beenPlaced() const{
     if (placed){
         return true;
     }

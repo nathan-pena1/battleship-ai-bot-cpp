@@ -21,7 +21,7 @@ class Cell{
 
 };
 
-bool validPlacement(Ship current, Cell grid[gridSize][gridSize], int row, int col, char direction);
+bool validPlacement(const Ship& current, Cell grid[gridSize][gridSize], int row, int col, char direction);
 void placeShip(Ship& current, Cell (&grid)[gridSize][gridSize], int row, int col, char direction);
 void displaySelection(Cell grid[gridSize][gridSize]);
 void displayMap(Cell (&grid)[gridSize][gridSize]);

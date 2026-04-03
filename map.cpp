@@ -17,7 +17,7 @@ void Cell::attackCell(){
     hasAttack = true;
 }
 
-bool validPlacement(Ship& current, Cell grid[gridSize][gridSize], int row, int col, char direction){  
+bool validPlacement(const Ship& current, Cell grid[gridSize][gridSize], int row, int col, char direction){  
     for (int i = 0; i < current.getHealth(); i++){
         int r = row;
         int c = col;
