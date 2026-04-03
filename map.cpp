@@ -17,14 +17,14 @@ void Cell::attackCell(){
     hasAttack = true;
 }
 
-bool validPlacement(Ship current, Cell grid[gridSize][gridSize], int row, int col, std::string direction){  
+bool validPlacement(Ship& current, Cell grid[gridSize][gridSize], int row, int col, char direction){  
     for (int i = 0; i < current.getHealth(); i++){
         int r = row;
         int c = col;
-        if (direction == "h" || direction == "H"){
+        if (direction == 'h' || direction == 'H'){
             c = col + i;
         }
-        else if (direction == "v" || direction == "V"){
+        else if (direction == 'v' || direction == 'V'){
             r = row + i;
         }
         else{
@@ -40,13 +40,13 @@ bool validPlacement(Ship current, Cell grid[gridSize][gridSize], int row, int co
     return true;
 }
 
-void placeShip(Ship& current, Cell (&grid)[gridSize][gridSize], int row, int col, std::string direction){
+void placeShip(Ship& current, Cell (&grid)[gridSize][gridSize], int row, int col, char direction){
     for (int i = 0; i < current.getHealth(); i++){
-        if (direction == "h" || direction == "H"){
+        if (direction == 'h' || direction == 'H'){
             grid[row][col + i].placeShip();
             grid[row][col + i].setShip(&current);
         }
-        else if (direction == "v" || direction == "V"){
+        else if (direction == 'v' || direction == 'V'){
             grid[row + i][col].placeShip();
             grid[row + i][col].setShip(&current);
         }

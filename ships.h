@@ -10,12 +10,12 @@ class Ship{
 
     public:
         Ship(std::string name, int health);
-        std::string getName() const;
-        int getHealth() const;
-        bool isSunk() const;
+        std::string getName();
+        int getHealth();
         bool beenPlaced();
         void place();
         void registerHit();
+        bool isSunk();
 
 };
 
