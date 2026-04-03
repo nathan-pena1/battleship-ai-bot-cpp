@@ -5,6 +5,7 @@
 #include "player.h"
 #include "game_manager.h"
 #include "combat.h"
+#include "util.h"
 using namespace std;
 
 int main(){
@@ -33,7 +34,7 @@ int main(){
                 cout << "Enter: " << i << " to place " << current.getName() << endl;
                 }
             }    
-            cin >> selectedShip;
+            selectedShip = validateInput<int>("Enter selection: ");
             cout << endl;
         
             for(int i = 0; i < fleet.size(); i++){
@@ -44,18 +45,17 @@ int main(){
                 found = true;
                 Ship& current =  fleet[i]; 
                 int row, col;
-                string direction;
+                char direction;
                 displaySelection(grid);
-                cout << "Select starting row for " << current.getName() << " (0-9): ";
-                cin >> row;
+                string promptRow = "Select starting row for " + current.getName() + " (0-9): ";
+                row = validateInput<int>(promptRow);
                 cout << endl;
                 displaySelection(grid);
-                cout << "Select starting column for " << current.getName() << " (0-9): ";
-                cin >> col;
+                string promptCol = "Select starting col for " + current.getName() + " (0-9): ";
+                col = validateInput<int>(promptCol);
                 cout << endl;
                 displaySelection(grid);
-                cout << "Horizontal or vertical? (H/V): ";
-                cin >> direction;
+                direction = validateInput<char>("Horizontal or vertical? (H/V): ");
 
 
                 if(!validPlacement(current, grid, row, col, direction)){
@@ -90,10 +90,8 @@ int main(){
         while(!(game.isOver())){
             displayMap(gameGrid);
             do{
-                cout << "Select row to strike (0-9): ";
-                cin >> row;
-                cout << "Select col to strike (0-9): "; 
-                cin >> col;
+                row = validateInput<int>("Select row to strike (0-9): ");
+                col = validateInput<int>("Select col to strike (0-9): ");
             }    while(!user.validAttack(gameGrid, row, col));
             if(user.attackCoordinate(gameGrid, enemyBot, row, col)){
                 cout << "Enemy ship hit!\n";
@@ -111,8 +109,7 @@ int main(){
                 game.endGame();
             }
         }
-        cout << "Would you like to play again? (Y/N): ";
-        cin >> restartGame;
+        restartGame = validateInput<char>("Would you like to play again? (Y/N): ");
         cout << endl;
 
     } while(restartGame == 'y' || restartGame == 'Y');
