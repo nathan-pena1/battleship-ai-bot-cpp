@@ -6,8 +6,6 @@ class Ship{
 
     std::string name;
     int health;
-
-// below may become obsolete 
     bool placed = false;
 
     public:

@@ -30,12 +30,7 @@ int main(){
                 }
             }    
             cin >> selectedShip;
-//          DELETE ME: Temp Special Top Secret Dev Debugging Tool
-            if(selectedShip == -1){
-                break;
-            }
             cout << endl;
-            int index;
         
             for(int i = 0; i < fleet.size(); i++){
                 if(selectedShip != i || fleet[i].beenPlaced()){
@@ -43,7 +38,6 @@ int main(){
                 }
         
                 found = true;
-                index = i;
                 Ship& current =  fleet[i]; 
                 int row, col;
                 string direction;

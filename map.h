@@ -26,8 +26,6 @@ void placeShip(Ship& current, Cell (&grid)[gridSize][gridSize], int row, int col
 void displaySelection(Cell grid[gridSize][gridSize]);
 void displayMap(Cell (&grid)[gridSize][gridSize]);
 
-// void placeShip(std::vector<Ship>& fleet, Cell (&grid)[gridSize][gridSize]);
-
 
 
 #endif

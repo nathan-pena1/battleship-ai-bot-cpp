@@ -28,13 +28,11 @@ class Player : public Combat{
         int getNumShips() const;
         void removeShip();
 
-//  private:
-//  std::string password;
-
 };
 
 class User : public Player{
-    
+    User(std::string name);
+    static User createPlayer(std::string name);
 };
 
 class Bot : public Player{

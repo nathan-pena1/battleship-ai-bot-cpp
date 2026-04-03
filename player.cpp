@@ -10,6 +10,12 @@ std::string Player::getName(){
     return name;
 }
 
+User::User(std::string name) : Player(name){}
+
+User User::createPlayer(std::string name){
+    return User(name);
+}
+
 Bot::Bot() : Player("E-Tron"){}
 
 void Bot::createGrid(){
