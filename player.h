@@ -20,7 +20,7 @@ class Player : public Combat{
         Player(std::string name);
         static Player createPlayer(std::string name);
         virtual ~Player() {}
-        std::string getName();
+        std::string getName() const;
         Cell (&getGrid())[gridSize][gridSize];
         std::vector<Ship>& getFleet();
         void setFleet(const std::vector<Ship>& ships);
@@ -31,8 +31,9 @@ class Player : public Combat{
 };
 
 class User : public Player{
-    User(std::string name);
-    static User createPlayer(std::string name);
+    public:
+        User(std::string name);
+        static User createPlayer(std::string name);
 };
 
 class Bot : public Player{
