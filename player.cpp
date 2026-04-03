@@ -6,7 +6,7 @@ Player Player::createPlayer(std::string name){
     return Player(name);
 }
 
-std::string Player::getName(){
+std::string Player::getName() const{
     return name;
 }
 

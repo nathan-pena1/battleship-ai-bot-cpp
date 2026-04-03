@@ -2,11 +2,11 @@
 
 Ship::Ship(std::string name, int health) : name(name), health(health){}
 
-std::string Ship::getName(){
+std::string Ship::getName() const{
     return name;
 }
 
-int Ship::getHealth(){
+int Ship::getHealth() const{
     return health;
 }
 
@@ -25,7 +25,7 @@ void Ship::registerHit(){
     health -= 1;
 }
 
-bool Ship::isSunk(){
+bool Ship::isSunk() const{
     if(health == 0){
         return true;
     }

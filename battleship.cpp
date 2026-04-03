@@ -13,7 +13,11 @@ int main(){
     cout << "Please enter a username: ";
     cin >> name;
     cout << endl;
-    Player user = Player::createPlayer(name);
+
+    char restartGame;
+
+    do{
+    User user = User::createPlayer(name);
     user.setFleet(Player::defaultFleet());
     Cell (&grid)[gridSize][gridSize] = user.getGrid();
     vector<Ship>& fleet = user.getFleet();
@@ -26,7 +30,7 @@ int main(){
             for(int i = 0; i < fleet.size(); i++){
                 Ship current = fleet[i];
                 if(!(current.beenPlaced())){
-                std::cout << "Enter: " << i << " to place " << current.getName() << std::endl;
+                cout << "Enter: " << i << " to place " << current.getName() << endl;
                 }
             }    
             cin >> selectedShip;
@@ -107,6 +111,12 @@ int main(){
                 game.endGame();
             }
         }
+        cout << "Would you like to play again? (Y/N): ";
+        cin >> restartGame;
+        cout << endl;
+
+    } while(restartGame == 'y' || restartGame == 'Y');
+    cout << "Thanks for playing!";
         
         
     return 0;

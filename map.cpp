@@ -2,11 +2,11 @@
 #include <iostream>
 #include <vector>
 
-bool Cell::containsShip(){
+bool Cell::containsShip() const{
     return hasShip;
 }
 
-bool Cell::beenAttacked(){
+bool Cell::beenAttacked() const{
     return hasAttack;
 }
 
@@ -124,7 +124,7 @@ void displayMap(Cell (&grid)[gridSize][gridSize]){
     std::cout << std::endl;
 }
 
-Ship* Cell::getShip(){
+Ship* Cell::getShip() const{
     return ship;
 }
 

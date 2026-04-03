@@ -12,11 +12,11 @@ class Cell{
     Ship* ship = nullptr;
 
     public:
-        bool containsShip();
-        bool beenAttacked();
+        bool containsShip() const;
+        bool beenAttacked() const;
         void placeShip();
         void attackCell();
-        Ship* getShip();
+        Ship* getShip() const;
         void setShip(Ship* ship);
 
 };
