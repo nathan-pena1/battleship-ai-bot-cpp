@@ -4,18 +4,22 @@
 #include <limits>
 #include <string>
 
-template <typename T> 
-T validateInput(const std::string& prompt){
+template <typename T>
+T validateInput(const std::string &prompt)
+{
     T input;
-    while (true){
+    while (true)
+    {
         std::cout << prompt;
         std::cin >> input;
-        if (std::cin.fail()){
+        if (std::cin.fail())
+        {
             std::cin.clear();
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
             std::cout << "Invalid input. Please try again.\n";
-        } 
-        else{
+        }
+        else
+        {
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
             return input;
         }

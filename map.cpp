@@ -2,132 +2,246 @@
 #include <iostream>
 #include <vector>
 
-bool Cell::containsShip() const{
+bool Cell::containsShip() const
+{
     return hasShip;
 }
 
-bool Cell::beenAttacked() const{
+bool Cell::beenAttacked() const
+{
     return hasAttack;
 }
 
-void Cell::placeShip(){
+void Cell::placeShip()
+{
     hasShip = true;
 }
-void Cell::attackCell(){
+void Cell::attackCell()
+{
     hasAttack = true;
 }
 
-bool validPlacement(const Ship& current, Cell grid[gridSize][gridSize], int row, int col, char direction){  
-    for (int i = 0; i < current.getHealth(); i++){
-        int r = row;
-        int c = col;
-        if (direction == 'h' || direction == 'H'){
-            c = col + i;
+bool validPlacement(const Ship &current, Cell grid[gridSize][gridSize], int row, int col, char direction)
+{
+    if (direction == 'h' || direction == 'H')
+    {
+        bool allowRight = true;
+        for (int i = 0; i < current.getHealth(); i++)
+        {
+            int c = col + i;
+            if (row < 0 || row >= gridSize || c < 0 || c >= gridSize || grid[row][c].containsShip())
+            {
+                allowRight = false;
+                break;
+            }
         }
-        else if (direction == 'v' || direction == 'V'){
-            r = row + i;
+        if (allowRight)
+        {
+            return true;
         }
-        else{
-            return false;
+        for (int i = 0; i < current.getHealth(); i++)
+        {
+            int c = col - i;
+            if (row < 0 || row >= gridSize || c < 0 || c >= gridSize || grid[row][c].containsShip())
+            {
+                return false;
+            }
         }
-        if (r < 0 || r >= gridSize || c < 0 || c >= gridSize){
-            return false; 
-        }
-        if(grid[r][c].containsShip()){
-            return false;
-        }
+        return true;
     }
-    return true;
+
+    if (direction == 'v' || direction == 'V')
+    {
+        bool allowDown = true;
+        for (int i = 0; i < current.getHealth(); i++)
+        {
+            int r = row + i;
+            if (r < 0 || r >= gridSize || col < 0 || col >= gridSize || grid[r][col].containsShip())
+            {
+                allowDown = false;
+                break;
+            }
+        }
+        if (allowDown)
+        {
+            return true;
+        }
+        for (int i = 0; i < current.getHealth(); i++)
+        {
+            int r = row - i;
+            if (r < 0 || r >= gridSize || col < 0 || col >= gridSize || grid[r][col].containsShip())
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    return false;
 }
 
-void placeShip(Ship& current, Cell (&grid)[gridSize][gridSize], int row, int col, char direction){
-    for (int i = 0; i < current.getHealth(); i++){
-        if (direction == 'h' || direction == 'H'){
-            grid[row][col + i].placeShip();
-            grid[row][col + i].setShip(&current);
+void placeShip(Ship &current, Cell (&grid)[gridSize][gridSize], int row, int col, char direction)
+{
+    if (direction == 'h' || direction == 'H')
+    {
+        bool placeRight = true;
+        for (int i = 0; i < current.getHealth(); i++)
+        {
+            int c = col + i;
+            if (row < 0 || row >= gridSize || c < 0 || c >= gridSize || grid[row][c].containsShip())
+            {
+                placeRight = false;
+                break;
+            }
         }
-        else if (direction == 'v' || direction == 'V'){
-            grid[row + i][col].placeShip();
-            grid[row + i][col].setShip(&current);
+
+        if (placeRight)
+        {
+            for (int i = 0; i < current.getHealth(); i++)
+            {
+                grid[row][col + i].placeShip();
+                grid[row][col + i].setShip(&current);
+            }
+        }
+        else
+        {
+            for (int i = 0; i < current.getHealth(); i++)
+            {
+                grid[row][col - i].placeShip();
+                grid[row][col - i].setShip(&current);
+            }
+        }
+        return;
+    }
+
+    if (direction == 'v' || direction == 'V')
+    {
+        bool placeDown = true;
+        for (int i = 0; i < current.getHealth(); i++)
+        {
+            int r = row + i;
+            if (r < 0 || r >= gridSize || col < 0 || col >= gridSize || grid[r][col].containsShip())
+            {
+                placeDown = false;
+                break;
+            }
+        }
+
+        if (placeDown)
+        {
+            for (int i = 0; i < current.getHealth(); i++)
+            {
+                grid[row + i][col].placeShip();
+                grid[row + i][col].setShip(&current);
+            }
+        }
+        else
+        {
+            for (int i = 0; i < current.getHealth(); i++)
+            {
+                grid[row - i][col].placeShip();
+                grid[row - i][col].setShip(&current);
+            }
         }
     }
 }
 
-// Temporary terminal display for testing and debugging 
-void displaySelection(Cell grid[gridSize][gridSize]){
+void displaySelection(Cell grid[gridSize][gridSize])
+{
     std::cout << "   ";
-    for(int i = 0; i < gridSize; i++){
+    for (int i = 0; i < gridSize; i++)
+    {
         std::cout << i << " ";
     }
     std::cout << std::endl;
     std::cout << "   ";
-    for(int i = 0; i < gridSize; i++){
+    for (int i = 0; i < gridSize; i++)
+    {
         std::cout << "_ ";
     }
     std::cout << std::endl;
-    for(int i = 0; i < gridSize; i++){
+    for (int i = 0; i < gridSize; i++)
+    {
         std::cout << i << " |";
-        for(int j = 0; j < gridSize; j++){
-            if(grid[i][j].containsShip()){
-                if(grid[i][j].beenAttacked()){
+        for (int j = 0; j < gridSize; j++)
+        {
+            if (grid[i][j].containsShip())
+            {
+                if (grid[i][j].beenAttacked())
+                {
                     std::cout << "x ";
                 }
-                else{
+                else
+                {
                     std::cout << "* ";
                 }
             }
-            else{
+            else
+            {
                 std::cout << "~ ";
             }
         }
         std::cout << "|" << std::endl;
     }
     std::cout << "   ";
-    for(int i = 0; i < gridSize; i++){
+    for (int i = 0; i < gridSize; i++)
+    {
         std::cout << "- ";
     }
     std::cout << std::endl;
 }
 
-void displayMap(Cell (&grid)[gridSize][gridSize]){
+void displayMap(Cell (&grid)[gridSize][gridSize])
+{
     std::cout << "   ";
-    for(int i = 0; i < gridSize; i++){
+    for (int i = 0; i < gridSize; i++)
+    {
         std::cout << i << " ";
     }
     std::cout << std::endl;
     std::cout << "   ";
-    for(int i = 0; i < gridSize; i++){
+    for (int i = 0; i < gridSize; i++)
+    {
         std::cout << "_ ";
     }
     std::cout << std::endl;
-    for(int i = 0; i < gridSize; i++){
+    for (int i = 0; i < gridSize; i++)
+    {
         std::cout << i << " |";
-        for(int j = 0; j < gridSize; j++){
-            if(grid[i][j].beenAttacked()){
-                if(grid[i][j].containsShip()){
+        for (int j = 0; j < gridSize; j++)
+        {
+            if (grid[i][j].beenAttacked())
+            {
+                if (grid[i][j].containsShip())
+                {
                     std::cout << "X ";
                 }
-                else{
+                else
+                {
                     std::cout << "O ";
                 }
             }
-            else{
+            else
+            {
                 std::cout << "~ ";
             }
         }
         std::cout << "|" << std::endl;
     }
     std::cout << "   ";
-    for(int i = 0; i < gridSize; i++){
+    for (int i = 0; i < gridSize; i++)
+    {
         std::cout << "- ";
     }
     std::cout << std::endl;
 }
 
-Ship* Cell::getShip() const{
+Ship *Cell::getShip() const
+{
     return ship;
 }
 
-void Cell::setShip(Ship* ship){
+void Cell::setShip(Ship *ship)
+{
     this->ship = ship;
 }

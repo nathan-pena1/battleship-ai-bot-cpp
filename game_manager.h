@@ -3,22 +3,15 @@
 #include <random>
 #include "player.h"
 
-class GameManager{
+class GameManager
+{
     bool gameOver = false;
-    public:
-        bool isOver();
-        void endGame();
-        int flipCoin();
-        bool winner(const Player& user, const Player& bot);
 
+public:
+    bool isOver();
+    void endGame();
+    int flipCoin();
+    bool winner(const Player &user, const Player &bot);
 };
-
-
-
-
-
-
-
-
 
 #endif
