@@ -5,27 +5,25 @@
 
 const int gridSize = 10;
 
-class Cell{
+class Cell
+{
 
     bool hasShip = false;
     bool hasAttack = false;
-    Ship* ship = nullptr;
+    Ship *ship = nullptr;
 
-    public:
-        bool containsShip() const;
-        bool beenAttacked() const;
-        void placeShip();
-        void attackCell();
-        Ship* getShip() const;
-        void setShip(Ship* ship);
-
+public:
+    bool containsShip() const;
+    bool beenAttacked() const;
+    void placeShip();
+    void attackCell();
+    Ship *getShip() const;
+    void setShip(Ship *ship);
 };
 
-bool validPlacement(const Ship& current, Cell grid[gridSize][gridSize], int row, int col, char direction);
-void placeShip(Ship& current, Cell (&grid)[gridSize][gridSize], int row, int col, char direction);
+bool validPlacement(const Ship &current, Cell grid[gridSize][gridSize], int row, int col, char direction);
+void placeShip(Ship &current, Cell (&grid)[gridSize][gridSize], int row, int col, char direction);
 void displaySelection(Cell grid[gridSize][gridSize]);
 void displayMap(Cell (&grid)[gridSize][gridSize]);
-
-
 
 #endif

@@ -1,6 +1,6 @@
 #include "ships.h"
 
-Ship::Ship(std::string name, int health) : name(name), health(health){}
+Ship::Ship(const std::string& name, int health) : name(name), health(health){}
 
 std::string Ship::getName() const{
     return name;
@@ -11,10 +11,7 @@ int Ship::getHealth() const{
 }
 
 bool Ship::beenPlaced() const{
-    if (placed){
-        return true;
-    }
-    return false;
+    return placed;
 }
 
 void Ship::place(){
@@ -26,8 +23,5 @@ void Ship::registerHit(){
 }
 
 bool Ship::isSunk() const{
-    if(health == 0){
-        return true;
-    }
-    return false;
+    return health == 0;
 }
