@@ -1,6 +1,5 @@
 #include "map.h"
 #include <iostream>
-#include <vector>
 
 bool Cell::containsShip() const
 {
