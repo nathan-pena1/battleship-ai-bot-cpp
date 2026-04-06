@@ -1,45 +1,122 @@
-# C++ Battleship Engine (With AI Bot)
+# C++ Battleship — Game Engine with FSM Opponent AI Bot
 
-I built this game to take on more complex system design, get really familiar with OOP, manage game state without any memory leaks, create an AI bot, and ultimately just have fun and experiment.
+I built this game to deepen my understanding of OOP, practice complex system design in C++, manage game state without memory leaks, and have fun building something end-to-end.
+
+---
+
+## Transparency note for recruiters and engineers
+
+This project has two clearly separated layers, and I want to be upfront about each one.
+
+### Backend - written by me, unassisted
+
+Everything in the game engine is code I wrote by hand:
+
+- The 10×10 `Cell`/grid model and all placement rules
+- Combat resolution and attack validation
+- Win/loss state management (`GameManager`)
+- The opponent **game-playing AI bot** — a **Finite State Machine** I designed myself (see Highlights below)
+- All supporting classes: `Ship`, `Player`, `User`, `Bot`, `Combat`
+
+When this README says "AI" in a technical context (e.g. *"AI Bot"*, *"FSM AI"*), it always refers to **the in-game opponent bot** - an algorithm I wrote in C++.
+
+### Frontend - built with an AI coding assistant
+
+The graphical client (`battleship_ui.cpp` / `battleship_ui.h`) was implemented using **Cursor with an LLM** as a coding assistant. I reviewed and integrated all of it; it calls the engine APIs I designed without touching any game logic. A raylib UI in raw C++ is mostly tedious layout work. I chose to use an assistant for that layer so I could spend my time on the engine, the bot, and other projects. The file split makes it easy to see exactly what was assisted: everything in `battleship_ui.cpp` is presentation only.
+
+---
 
 ## Highlights
 
-### 1. "Intelligent AI" Bot (FSM & Queueing)
-I implemented a **Finite State Machine (FSM)** bot with two modes: `search` and `destroy`.  
+### 1. Opponent AI Bot - FSM + Priority Queue (written by me)
 
-* **Search Mode:** The bot uses random RNG to find a target.
-* **Destroy Mode:** Once a ship is hit, the bot switches states and pushes the adjacent cells into a `std::queue`. It then clears that queue before going back to searching.   
+> **Important:** this "AI" is the *game opponent*, not the coding assistant. Two completely different things.
 
-This is *one of* the more efficient strategies when implementing an AI bot. I purposely avoided the most efficient strategy (checkerboard pattern) as I felt the game would not be as fun. I may implement an **EXTREME DIFFICULTY** mode in the future.
+I implemented a **Finite State Machine** bot with two modes:
 
-### 2. Crash Protected Input (The `util.h` Template)
-To avoid a rogue `std::cin` crashing the whole program if a user types a letter instead of a number. I wrote a header-only template in `util.h` to fix this. It detects when the input stream fails, clears the error, flushes the buffer, and forces a retry. This makes the game virtually impossible to crash via the keyboard.
+- **Search mode:** the bot picks random coordinates via RNG until it finds a ship.
+- **Destroy mode:** once a hit is registered, the bot pushes all four adjacent cells into a `std::queue` and drains that queue before returning to search. This is a classic *hunt/target* strategy.
 
-### 3. Memory & Performance
-* **$O(1)$ Combat Lookups:** Every `Cell` on the 10x10 grid holds a raw pointer observer (`Ship*`) to the actual ship object. This means when a coordinate is attacked, it just follows the pointer directly to the ship to register damage, rather than searching through a list.
+I purposely implemented a semi efficient attack approach for the AI. I avoided implementing the mathematically most efficient approach (the checkerboard parity pattern) because it makes the game less fun. I may in the future implement an **EXTREME** difficulty mode for presentation purposes, as the algorithm differs in only a couple lines, but I am unsure how adding a mode with an unbeatable bot would add to the user experience.
 
-## Project Structure
-* `battleship.cpp`: The main game loop and session lifecycle management.
-* `player.cpp / .h`: Handles the `User` and `Bot` classes, including the AI's state logic.
-* `map.cpp / .h`: Manages the 10x10 grid, `Cell` states, and visual terminal rendering.
-* `ships.cpp / .h`: Defines ship attributes like health, naming, and "sunk" status.
-* `game_manager.cpp / .h`: Controls the overall game state and win conditions.
-* `combat.cpp / .h`: A dedicated class for processing damage and validating attack coordinates.
-* `util.h`: Defensive programming template that guarantees a valid *type* input.
+### 2. Crash-proof input (`util.h` template)
 
-## How to Run
-**Note:** This engine is designed and tested for Unix-based terminal environments (macOS and Linux). 
-* The compilation command below assumes you are using a terminal that supports `g++` or `clang++`. 
-* If you are on Windows, you will need to use **WSL (Windows Subsystem for Linux)** or a compiler like **MinGW** to run these commands.
-1. Clone the repository 
+A header-only template that wraps `std::cin`. If a user types a letter where a number is expected, `std::cin` normally sets an error flag and the program loops or crashes. This template clears the flag, flushes the buffer, and forces a retry — making the terminal-driven build virtually impossible to crash via keyboard.
+
+### 3. O(1) combat lookups
+
+Every `Cell` holds a raw observer pointer (`Ship`*) to the ship sitting on it. When a coordinate is attacked, the engine follows the pointer directly to call `registerHit()`. This requires no linear search through a fleet list. Sunk-ship tracking (`removeShip()`) is O(1) for the same reason.
+
+---
+
+## Project structure
+
+
+| File                       | Author      | Purpose                                          |
+| -------------------------- | ----------- | ------------------------------------------------ |
+| `battleship.cpp`           | Me          | `main` — calls `run_raylib_battleship_ui()`      |
+| `battleship_ui.cpp` / `.h` | AI-assisted | All raylib drawing, input, and game-flow wiring  |
+| `player.cpp` / `.h`        | Me          | `Player`, `User`, `Bot` — includes FSM bot logic |
+| `map.cpp` / `.h`           | Me          | 10×10 grid, `Cell` state, placement helpers      |
+| `ships.cpp` / `.h`         | Me          | `Ship` — health, name, sunk state                |
+| `game_manager.cpp` / `.h`  | Me          | Win condition, game-over state                   |
+| `combat.cpp` / `.h`        | Me          | Attack execution and coordinate validation       |
+| `util.h`                   | Me          | Crash-proof `std::cin` input template            |
+
+
+---
+
+## Dependencies
+
+- **raylib** — graphical client only (`battleship_ui.cpp`)
+
+### macOS (Homebrew)
+
 ```bash
-   git clone https://github.com/nathan-pena1/battleship-ai-bot-cpp.git
+brew install raylib
 ```
-2. Compile all `.cpp` files together:
 
-```
-g++ *.cpp -o battleship
+### Linux
+
+Install from your distro packages or build from source via the [raylib wiki](https://github.com/raysan5/raylib/wiki).
+
+## How to Build & Run
+
+**macOS** (Apple Silicon; swap `/opt/homebrew` → `/usr/local` for Intel):
+
+```bash
+g++ -std=c++17 -O2 \
+  -I/opt/homebrew/include -L/opt/homebrew/lib \
+  battleship.cpp battleship_ui.cpp combat.cpp game_manager.cpp map.cpp player.cpp ships.cpp \
+  -o battleship -lraylib \
+  -framework CoreVideo -framework IOKit -framework Cocoa -framework OpenGL
 ./battleship
 ```
-  
-I may add a CMake file later to make cross platform use easier.
+
+**Linux** (with `pkg-config`):
+
+```bash
+g++ -std=c++17 -O2 *.cpp -o battleship $(pkg-config --libs --cflags raylib)
+./battleship
+```
+
+**Windows:** Install raylib via [MSYS2](https://www.msys2.org/) or [vcpkg](https://vcpkg.io/), then link `-lraylib` with the required system libs for your toolchain.
+
+### Controls
+
+
+| Input                   | Action                  |
+| ----------------------- | ----------------------- |
+| Type + **Enter**        | Confirm callsign        |
+| Click ship → click grid | Place ship              |
+| **R**                   | Rotate ship orientation |
+| Click enemy grid        | Fire                    |
+| **Enter** / button      | Play again              |
+| **Esc**                 | Quit                    |
+
+
+---
+
+## Terminal-only build
+
+The engine has no raylib dependency. Remove or replace `battleship_ui.cpp` and wire the game loop to a terminal UI using the same public types (`Player`, `User`, `Bot`, `GameManager`, etc.) and `util.h` for safe input.
