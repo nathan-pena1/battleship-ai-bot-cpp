@@ -1,12 +1,13 @@
 # C++ Battleship — Game Engine with FSM Opponent AI Bot
 
-I built this game to deepen my understanding of OOP, practice complex system design in C++, manage game state without memory leaks, and have fun building something end-to-end.
+I built this game to deepen my understanding of OOP, practice complex system design in C++, manage game state without any memory leaks, and ultimately just have fun.
+<img width="1710" height="1073" alt="BattleshipThumbnail" src="https://github.com/user-attachments/assets/f8fb3551-cd8f-4f95-bf80-6b23aa1d1ce5" />
 
 ---
 
 ## Transparency note for recruiters and engineers
 
-This project has two clearly separated layers, and I want to be upfront about each one.
+This project has two clearly separated layers.
 
 ### Backend - written by me, unassisted
 
@@ -15,7 +16,7 @@ Everything in the game engine is code I wrote by hand:
 - The 10×10 `Cell`/grid model and all placement rules
 - Combat resolution and attack validation
 - Win/loss state management (`GameManager`)
-- The opponent **game-playing AI bot** — a **Finite State Machine** I designed myself (see Highlights below)
+- The opponent **game-playing AI bot**: a **Finite State Machine** I designed myself (see Highlights below)
 - All supporting classes: `Ship`, `Player`, `User`, `Bot`, `Combat`
 
 When this README says "AI" in a technical context (e.g. *"AI Bot"*, *"FSM AI"*), it always refers to **the in-game opponent bot** - an algorithm I wrote in C++.
